@@ -1,0 +1,148 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+/* ===== Header ===== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #000;
+  border-bottom: 1px solid #333;
+  z-index: 1000;
+  position: relative;
+}
+
+header h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#controls label {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+#controls select {
+  background: #222;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+#controls select:focus {
+  outline: none;
+  border-color: #888;
+}
+
+#count {
+  font-size: 0.8rem;
+  color: #888;
+  margin-left: 8px;
+}
+
+/* ===== Map ===== */
+#map {
+  height: calc(100vh - 50px);
+  width: 100%;
+}
+
+/* ===== Leaflet Popup ===== */
+.leaflet-popup-content-wrapper {
+  background: #1a1a1a !important;
+  color: #eee !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important;
+}
+
+.leaflet-popup-tip {
+  background: #1a1a1a !important;
+}
+
+.leaflet-popup-content {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.popup-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.popup-coords {
+  color: #999;
+  font-size: 0.78rem;
+  font-family: monospace;
+}
+
+.popup-time {
+  color: #777;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.popup-desc {
+  color: #bbb;
+  font-size: 0.82rem;
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.popup-alt, .popup-acc {
+  color: #999;
+  font-size: 0.78rem;
+  font-family: monospace;
+}
+
+/* ===== Custom Marker ===== */
+.custom-marker {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,255,255,0.4);
+}
+
+/* ===== Leaflet Controls Darkmode ===== */
+.leaflet-control-zoom a {
+  background: #222 !important;
+  color: #eee !important;
+  border-color: #444 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #333 !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(0,0,0,0.7) !important;
+  color: #666 !important;
+}
+
+.leaflet-control-attribution a {
+  color: #888 !important;
+}
