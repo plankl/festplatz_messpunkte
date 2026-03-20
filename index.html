@@ -18,15 +18,27 @@
     <div id="controls">
       <label for="layer-select">Karte:</label>
       <select id="layer-select">
-        <option value="satellite">Satellit</option>
-        <option value="street">Straße</option>
+        <option value="satellite">Satellit (HD)</option>
+        <option value="satellite_labels">Satellit + Labels</option>
+        <option value="street">Straße (Dark)</option>
         <option value="topo">Topografisch</option>
+        <option value="osm">OpenStreetMap</option>
       </select>
+      <button id="btn-auswertung" title="Auswertung anzeigen">📊 Auswertung</button>
       <span id="count"></span>
     </div>
   </header>
 
   <div id="map"></div>
+
+  <!-- Auswertung Panel -->
+  <div id="auswertung" class="panel hidden">
+    <div class="panel-header">
+      <h2>Auswertung Messpunkte</h2>
+      <button id="btn-close-panel">&times;</button>
+    </div>
+    <div id="auswertung-content"></div>
+  </div>
 
   <script src="app.js"></script>
 </body>

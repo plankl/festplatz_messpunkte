@@ -63,10 +63,162 @@ header h1 {
   margin-left: 8px;
 }
 
+#btn-auswertung {
+  background: #333;
+  color: #eee;
+  border: 1px solid #555;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#btn-auswertung:hover {
+  background: #555;
+}
+
 /* ===== Map ===== */
 #map {
   height: calc(100vh - 50px);
   width: 100%;
+}
+
+/* ===== Auswertung Panel ===== */
+.panel {
+  position: fixed;
+  top: 50px;
+  right: 0;
+  width: 520px;
+  max-width: 90vw;
+  height: calc(100vh - 50px);
+  background: #111;
+  border-left: 1px solid #333;
+  z-index: 2000;
+  overflow-y: auto;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+}
+.panel.hidden {
+  display: none;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #333;
+  background: #000;
+  flex-shrink: 0;
+}
+.panel-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+.panel-header button {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.panel-header button:hover {
+  color: #fff;
+}
+#auswertung-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+#auswertung-content h3 {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin: 16px 0 8px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 4px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.stat {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.stat-val {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+.stat-label {
+  display: block;
+  font-size: 0.72rem;
+  color: #888;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Infra Tags */
+.infra-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.infra-tag {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 0.78rem;
+  color: #ccc;
+}
+
+/* Table */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.table-wrap th,
+.table-wrap td {
+  padding: 6px 8px;
+  border: 1px solid #333;
+  text-align: left;
+  white-space: nowrap;
+}
+.table-wrap th {
+  background: #1a1a1a;
+  color: #aaa;
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.table-wrap td {
+  color: #ccc;
+}
+.table-wrap tr:hover td {
+  background: #1e1e1e;
+}
+.mono {
+  font-family: "Consolas", "Fira Code", monospace;
+  font-size: 0.75rem;
 }
 
 /* ===== Leaflet Popup ===== */
@@ -84,6 +236,13 @@ header h1 {
 .leaflet-popup-content {
   font-size: 0.85rem;
   line-height: 1.5;
+}
+
+.popup-id {
+  color: #666;
+  font-size: 0.7rem;
+  font-family: monospace;
+  margin-bottom: 2px;
 }
 
 .popup-title {
@@ -117,10 +276,16 @@ header h1 {
   font-family: monospace;
 }
 
+.popup-user {
+  color: #666;
+  font-size: 0.72rem;
+  margin-top: 4px;
+}
+
 /* ===== Custom Marker ===== */
 .custom-marker {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: #fff;
   border: 2px solid #000;
   border-radius: 50%;
