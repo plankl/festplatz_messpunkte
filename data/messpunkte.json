@@ -51,6 +51,19 @@
       "speed": null,
       "timestamp": "2026-03-20T17:40:21.144522+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 5,
+      "name": "Messpunkt 4",
+      "description": "Revision Wasser, Revision Strom, Abwasser",
+      "lat": 49.110297,
+      "lon": 11.68409,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T17:40:32.517296+00:00",
+      "user": "Sebastian"
     }
   ]
 }
