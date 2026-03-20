@@ -2,19 +2,6 @@
   "messpunkte": [
     {
       "id": 1,
-      "name": "Test1",
-      "description": "1234",
-      "lat": 49.104934,
-      "lon": 11.686437,
-      "altitude": null,
-      "accuracy": null,
-      "heading": null,
-      "speed": null,
-      "timestamp": "2026-03-20T15:29:58.900690+00:00",
-      "user": "Sebastian"
-    },
-    {
-      "id": 2,
       "name": "Ende Bar Abwasser+Wasser",
       "description": "Ende Bar Abwasser+Wasser",
       "lat": 49.110061,
@@ -27,8 +14,8 @@
       "user": "Sebastian"
     },
     {
-      "id": 3,
-      "name": "Messpunkt 2",
+      "id": 2,
+      "name": "Ende Strom, Revision Wasser",
       "description": "Ende Strom, Revision Wasser",
       "lat": 49.110174,
       "lon": 11.684276,
@@ -40,8 +27,8 @@
       "user": "Sebastian"
     },
     {
-      "id": 4,
-      "name": "Messpunkt 3",
+      "id": 3,
+      "name": "Revision Strom, Wasser, Schmutzwasser",
       "description": "Revision Strom, Revision Wasser, Schmutzwasser",
       "lat": 49.110236,
       "lon": 11.684183,
@@ -53,8 +40,8 @@
       "user": "Sebastian"
     },
     {
-      "id": 5,
-      "name": "Messpunkt 4",
+      "id": 4,
+      "name": "Revision Wasser, Strom, Abwasser",
       "description": "Revision Wasser, Revision Strom, Abwasser",
       "lat": 49.110297,
       "lon": 11.68409,
@@ -66,7 +53,7 @@
       "user": "Sebastian"
     },
     {
-      "id": 6,
+      "id": 5,
       "name": "Messpunkt 5",
       "description": "Messpunkt 5",
       "lat": 49.110651,
@@ -79,8 +66,8 @@
       "user": "Sebastian"
     },
     {
-      "id": 7,
-      "name": "Messpunkt 6",
+      "id": 6,
+      "name": "Strom, Abwasser, Revision Wasser+Strom",
       "description": "Strom, Abwasser Anschluss, Revision Wasser, Revision Strom",
       "lat": 49.110387,
       "lon": 11.683969,
@@ -92,8 +79,8 @@
       "user": "Sebastian"
     },
     {
-      "id": 8,
-      "name": "Messpunkt 7",
+      "id": 7,
+      "name": "Anschluss Abwasser",
       "description": "Anschluss Abwasser",
       "lat": 49.110415,
       "lon": 11.68394,
@@ -105,8 +92,8 @@
       "user": "Sebastian"
     },
     {
-      "id": 9,
-      "name": "Messpunkt 8",
+      "id": 8,
+      "name": "Anschluss Abwasser, Revision Strom+Wasser",
       "description": "Anschluss Abwasser, Revision Strom, Revision Wasser",
       "lat": 49.110444,
       "lon": 11.683912,

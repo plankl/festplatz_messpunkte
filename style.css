@@ -332,6 +332,32 @@ header h1 {
   color: #fff;
 }
 
+/* ===== Overlay Opacity Slider ===== */
+#overlay-opacity {
+  width: 70px;
+  height: 4px;
+  accent-color: #2a6;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* ===== Overlay Button in Popup ===== */
+.overlay-btn {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: #2a6;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.overlay-btn:hover {
+  background: #3b7;
+}
+
 /* ===== Camera Marker ===== */
 .cam-marker {
   font-size: 18px;

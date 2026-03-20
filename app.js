@@ -290,20 +290,37 @@
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
-  // --- Drohnenfotos ---
+  // --- Drohnenfotos: Image-Overlays + Marker ---
   const FOTOS = [
-    { file: "dji_fly_20260321_181834_189_1774021582162_photo.jpg", lat: 49.11022356, lon: 11.68386842, alt: 571, label: "Foto 1 – Übersicht Ost-West" },
-    { file: "dji_fly_20260321_181842_190_1774021581874_photo.jpg", lat: 49.11034611, lon: 11.68405944, alt: 566, label: "Foto 2 – Nord-Süd Trasse" },
-    { file: "dji_fly_20260321_181928_191_1774021581565_photo.jpg", lat: 49.11010933, lon: 11.68432358, alt: 616, label: "Foto 3 – Gesamtübersicht" },
-    { file: "dji_fly_20260321_182012_192_1774021581281_photo.jpg", lat: 49.11006797, lon: 11.68415356, alt: 596, label: "Foto 4 – Trasse Süd" },
-    { file: "dji_fly_20260321_182020_193_1774021581034_photo.jpg", lat: 49.11029042, lon: 11.68383275, alt: 596, label: "Foto 5 – Baufeld West" },
-    { file: "dji_fly_20260321_182032_194_1774021580783_photo.jpg", lat: 49.11029044, lon: 11.68383275, alt: 596, label: "Foto 6 – Baufeld Detail" },
-    { file: "dji_fly_20260321_182038_195_1774021580540_photo.jpg", lat: 49.11029039, lon: 11.68383442, alt: 584, label: "Foto 7 – Graben komplett" },
-    { file: "dji_fly_20260321_182042_196_1774021580281_photo.jpg", lat: 49.11029033, lon: 11.68383392, alt: 584, label: "Foto 8 – Anschlussbereich" },
+    { file: "dji_fly_20260321_181834_189_1774021582162_photo.jpg", overlay: "dji_fly_20260321_181834_189_1774021582162_photo_overlay.jpg", lat: 49.11022356, lon: 11.68386842, alt: 73, label: "Foto 1 – Übersicht Ost-West", bounds: [[49.10964245, 11.68298510], [49.11080470, 11.68475177]] },
+    { file: "dji_fly_20260321_181842_190_1774021581874_photo.jpg", overlay: "dji_fly_20260321_181842_190_1774021581874_photo_overlay.jpg", lat: 49.11034611, lon: 11.68405944, alt: 68, label: "Foto 2 – Nord-Süd Trasse", bounds: [[49.10980473, 11.68323694], [49.11088751, 11.68488198]] },
+    { file: "dji_fly_20260321_181928_191_1774021581565_photo.jpg", overlay: "dji_fly_20260321_181928_191_1774021581565_photo_overlay.jpg", lat: 49.11010933, lon: 11.68432358, alt: 118, label: "Foto 3 – Gesamtübersicht", bounds: [[49.10917295, 11.68289170], [49.11104572, 11.68575546]] },
+    { file: "dji_fly_20260321_182012_192_1774021581281_photo.jpg", overlay: "dji_fly_20260321_182012_192_1774021581281_photo_overlay.jpg", lat: 49.11006797, lon: 11.68415356, alt: 98, label: "Foto 4 – Trasse Süd", bounds: [[49.10929357, 11.68296760], [49.11084241, 11.68533956]] },
+    { file: "dji_fly_20260321_182020_193_1774021581034_photo.jpg", overlay: "dji_fly_20260321_182020_193_1774021581034_photo_overlay.jpg", lat: 49.11029042, lon: 11.68383275, alt: 98, label: "Foto 5 – Baufeld West", bounds: [[49.10951098, 11.68265326], [49.11106989, 11.68501225]] },
+    { file: "dji_fly_20260321_182032_194_1774021580783_photo.jpg", overlay: "dji_fly_20260321_182032_194_1774021580783_photo_overlay.jpg", lat: 49.11029044, lon: 11.68383275, alt: 98, label: "Foto 6 – Baufeld Detail", bounds: [[49.10952059, 11.68263834], [49.11106032, 11.68502717]] },
+    { file: "dji_fly_20260321_182038_195_1774021580540_photo.jpg", overlay: "dji_fly_20260321_182038_195_1774021580540_photo_overlay.jpg", lat: 49.11029039, lon: 11.68383442, alt: 86, label: "Foto 7 – Graben komplett", bounds: [[49.10960405, 11.68281644], [49.11097678, 11.68485244]] },
+    { file: "dji_fly_20260321_182042_196_1774021580281_photo.jpg", overlay: "dji_fly_20260321_182042_196_1774021580281_photo_overlay.jpg", lat: 49.11029033, lon: 11.68383392, alt: 85, label: "Foto 8 – Anschlussbereich", bounds: [[49.10960929, 11.68279971], [49.11097142, 11.68486814]] },
   ];
 
-  const fotoLayerGroup = L.layerGroup();
-  let fotosVisible = false;
+  // Image-Overlay Layer (nur das beste Übersichtsfoto als Standard-Overlay)
+  const overlayGroup = L.layerGroup();
+  let overlayVisible = false;
+  let currentOverlayIdx = 2; // Foto 3 = beste Übersicht (höchste Flughöhe)
+
+  function showOverlay(idx) {
+    overlayGroup.clearLayers();
+    currentOverlayIdx = idx;
+    const f = FOTOS[idx];
+    const imgOverlay = L.imageOverlay(
+      "Fotos/overlay/" + f.overlay,
+      f.bounds,
+      { opacity: 0.75, interactive: false }
+    );
+    overlayGroup.addLayer(imgOverlay);
+  }
+
+  // Foto-Marker Layer
+  const fotoMarkerGroup = L.layerGroup();
 
   const camIcon = L.divIcon({
     className: "cam-marker",
@@ -320,23 +337,51 @@
         '<div class="popup-title">' + escapeHtml(f.label) + '</div>' +
         '<img src="Fotos/thumb/' + f.file + '" class="popup-thumb" data-idx="' + idx + '" />' +
         '<div class="popup-coords">' + f.lat.toFixed(8) + ", " + f.lon.toFixed(8) + '</div>' +
-        '<div class="popup-alt">Flughöhe: ' + f.alt + ' m ü. NN</div>' +
+        '<div class="popup-alt">Flughöhe: ' + f.alt + ' m AGL</div>' +
+        '<button class="overlay-btn" data-idx="' + idx + '">Als Overlay zeigen</button>' +
       '</div>',
       { maxWidth: 300 }
     );
-    fotoLayerGroup.addLayer(m);
+    fotoMarkerGroup.addLayer(m);
   });
 
+  // Button: Fotos ein/aus (zeigt Overlay + Marker)
   document.getElementById("btn-fotos").addEventListener("click", function () {
-    fotosVisible = !fotosVisible;
-    if (fotosVisible) {
-      fotoLayerGroup.addTo(map);
+    overlayVisible = !overlayVisible;
+    if (overlayVisible) {
+      showOverlay(currentOverlayIdx);
+      overlayGroup.addTo(map);
+      fotoMarkerGroup.addTo(map);
       this.classList.add("active");
     } else {
-      fotoLayerGroup.removeFrom(map);
+      overlayGroup.removeFrom(map);
+      fotoMarkerGroup.removeFrom(map);
       this.classList.remove("active");
     }
   });
+
+  // Overlay-Wechsel per Popup-Button
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("overlay-btn")) {
+      const idx = parseInt(e.target.dataset.idx, 10);
+      showOverlay(idx);
+      if (!overlayVisible) {
+        overlayVisible = true;
+        overlayGroup.addTo(map);
+        document.getElementById("btn-fotos").classList.add("active");
+      }
+    }
+  });
+
+  // --- Opacity-Slider ---
+  const slider = document.getElementById("overlay-opacity");
+  if (slider) {
+    slider.addEventListener("input", function () {
+      overlayGroup.eachLayer(function (layer) {
+        if (layer.setOpacity) layer.setOpacity(parseFloat(slider.value));
+      });
+    });
+  }
 
   // --- Lightbox ---
   const lbEl = document.getElementById("lightbox");
