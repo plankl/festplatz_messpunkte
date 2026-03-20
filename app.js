@@ -57,7 +57,7 @@
   // --- Daten laden & Marker setzen ---
   const countEl = document.getElementById("count");
 
-  fetch("data/messpunkte.json")
+  fetch("data/messpunkte.json?v=" + Date.now())
     .then((res) => {
       if (!res.ok) throw new Error("Daten konnten nicht geladen werden");
       return res.json();
