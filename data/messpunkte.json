@@ -90,6 +90,19 @@
       "speed": null,
       "timestamp": "2026-03-20T17:40:45.233529+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 8,
+      "name": "Messpunkt 7",
+      "description": "Anschluss Abwasser",
+      "lat": 49.110415,
+      "lon": 11.68394,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T17:40:50.849852+00:00",
+      "user": "Sebastian"
     }
   ]
 }
