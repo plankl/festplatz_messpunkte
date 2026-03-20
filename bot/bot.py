@@ -7,6 +7,7 @@ Erfasst: Lat, Lon, Hoehe, Genauigkeit (horizontal/vertikal).
 
 import json
 import os
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -55,6 +56,30 @@ def save_data(data: dict) -> None:
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+REPO_DIR = Path(__file__).resolve().parent.parent
+
+
+def git_push(message: str) -> bool:
+    """Commit und push der messpunkte.json."""
+    try:
+        subprocess.run(
+            ["git", "add", "data/messpunkte.json"],
+            cwd=REPO_DIR, check=True, capture_output=True, timeout=15,
+        )
+        subprocess.run(
+            ["git", "commit", "-m", message],
+            cwd=REPO_DIR, check=True, capture_output=True, timeout=15,
+        )
+        subprocess.run(
+            ["git", "push"],
+            cwd=REPO_DIR, check=True, capture_output=True, timeout=30,
+        )
+        return True
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
+        print(f"Git push fehlgeschlagen: {e}")
+        return False
 
 
 def is_authorized(update: Update) -> bool:
@@ -189,6 +214,13 @@ async def _save_messpunkt(update: Update, context: ContextTypes.DEFAULT_TYPE, de
     if h_accuracy is not None:
         msg += f"   Genauigkeit: ±{h_accuracy:.1f} m\n"
 
+    # Auto-push zu GitHub
+    pushed = git_push(f"Messpunkt #{next_id}: {name}")
+    if pushed:
+        msg += "   📤 Auf GitHub gepusht"
+    else:
+        msg += "   ⚠️ Git-Push fehlgeschlagen (manuell pushen)"
+
     await update.message.reply_text(msg)
     return ConversationHandler.END
 
@@ -249,6 +281,7 @@ async def loesche(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     save_data(data)
+    git_push(f"Messpunkt #{target_id} geloescht")
     await update.message.reply_text(f"Messpunkt #{target_id} geloescht.")
 
 
