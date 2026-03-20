@@ -38,6 +38,19 @@
       "speed": null,
       "timestamp": "2026-03-20T15:25:37.790714+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 4,
+      "name": "Test5",
+      "description": "12340",
+      "lat": 49.104966,
+      "lon": 11.686559,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T15:28:58.694840+00:00",
+      "user": "Sebastian"
     }
   ]
 }
