@@ -25,6 +25,19 @@
       "speed": null,
       "timestamp": "2026-03-20T15:50:18.661158+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 3,
+      "name": "Messpunkt 2",
+      "description": "Ende Strom, Revision Wasser",
+      "lat": 49.110174,
+      "lon": 11.684276,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T15:51:21.652930+00:00",
+      "user": "Sebastian"
     }
   ]
 }
