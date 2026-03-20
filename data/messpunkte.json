@@ -25,6 +25,19 @@
       "speed": null,
       "timestamp": "2026-03-20T15:18:10.218730+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 3,
+      "name": "Tedt4",
+      "description": "Test4",
+      "lat": 49.102262,
+      "lon": 11.686266,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T15:25:37.790714+00:00",
+      "user": "Sebastian"
     }
   ]
 }
