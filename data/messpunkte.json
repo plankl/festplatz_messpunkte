@@ -12,6 +12,19 @@
       "speed": null,
       "timestamp": "2026-03-20T15:29:58.900690+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 2,
+      "name": "Ende Bar Abwasser+Wasser",
+      "description": "Ende Bar Abwasser+Wasser",
+      "lat": 49.110061,
+      "lon": 11.68439,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T15:50:18.661158+00:00",
+      "user": "Sebastian"
     }
   ]
 }
