@@ -103,6 +103,19 @@
       "speed": null,
       "timestamp": "2026-03-20T17:40:50.849852+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 9,
+      "name": "Messpunkt 8",
+      "description": "Anschluss Abwasser, Revision Strom, Revision Wasser",
+      "lat": 49.110444,
+      "lon": 11.683912,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T17:40:57.130930+00:00",
+      "user": "Sebastian"
     }
   ]
 }
