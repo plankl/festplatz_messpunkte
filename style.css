@@ -311,3 +311,102 @@ header h1 {
 .leaflet-control-attribution a {
   color: #888 !important;
 }
+
+/* ===== Foto Button ===== */
+#btn-fotos {
+  background: #333;
+  color: #eee;
+  border: 1px solid #555;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#btn-fotos:hover {
+  background: #555;
+}
+#btn-fotos.active {
+  background: #2a6;
+  border-color: #2a6;
+  color: #fff;
+}
+
+/* ===== Camera Marker ===== */
+.cam-marker {
+  font-size: 18px;
+  text-align: center;
+  line-height: 24px;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.8));
+}
+
+/* ===== Foto-Popup ===== */
+.foto-popup .popup-thumb {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  margin: 6px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.foto-popup .popup-thumb:hover {
+  opacity: 0.8;
+}
+
+/* ===== Lightbox ===== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.lightbox.hidden {
+  display: none;
+}
+.lightbox img {
+  max-width: 92vw;
+  max-height: 82vh;
+  border-radius: 6px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+#lb-caption {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-top: 12px;
+  text-align: center;
+}
+#lb-close {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.2rem;
+  cursor: pointer;
+  z-index: 10;
+}
+#lb-close:hover { color: #f66; }
+#lb-prev, #lb-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  font-size: 2.5rem;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 10;
+}
+#lb-prev { left: 16px; }
+#lb-next { right: 16px; }
+#lb-prev:hover, #lb-next:hover {
+  background: rgba(255,255,255,0.25);
+}

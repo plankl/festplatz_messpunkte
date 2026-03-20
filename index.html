@@ -24,6 +24,7 @@
         <option value="topo">Topografisch</option>
         <option value="osm">OpenStreetMap</option>
       </select>
+      <button id="btn-fotos" title="Drohnenfotos ein/aus">📷 Fotos</button>
       <button id="btn-auswertung" title="Auswertung anzeigen">📊 Auswertung</button>
       <span id="count"></span>
     </div>
@@ -38,6 +39,15 @@
       <button id="btn-close-panel">&times;</button>
     </div>
     <div id="auswertung-content"></div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox hidden">
+    <button id="lb-close">&times;</button>
+    <button id="lb-prev">&#8249;</button>
+    <button id="lb-next">&#8250;</button>
+    <img id="lb-img" src="" alt="" />
+    <div id="lb-caption"></div>
   </div>
 
   <script src="app.js"></script>

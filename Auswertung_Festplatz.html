@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Auswertung – Festplatz Messpunkte</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:#111;color:#eee}
+
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:#000;border-bottom:1px solid #333}
+header h1{font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:.5px}
+.header-info{font-size:.8rem;color:#888}
+
+/* Layout */
+.container{display:flex;height:calc(100vh - 52px)}
+#map-col{flex:1;min-width:0}
+#map{height:100%;width:100%}
+#panel{width:480px;max-width:45vw;overflow-y:auto;background:#111;border-left:1px solid #333;padding:20px}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:10px 12px;text-align:center}
+.stat-val{display:block;font-size:1.1rem;font-weight:700;color:#fff}
+.stat-label{display:block;font-size:.7rem;color:#888;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Infra Tags */
+h3{font-size:.88rem;color:#aaa;margin:14px 0 6px;border-bottom:1px solid #333;padding-bottom:4px}
+.infra-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.infra-tag{background:#222;border:1px solid #444;border-radius:4px;padding:3px 8px;font-size:.78rem;color:#ccc}
+
+/* Tables */
+.table-wrap{overflow-x:auto;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th,td{padding:6px 8px;border:1px solid #333;text-align:left;white-space:nowrap}
+th{background:#1a1a1a;color:#aaa;font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.3px}
+td{color:#ccc}
+tr:hover td{background:#1e1e1e}
+.mono{font-family:Consolas,"Fira Code",monospace;font-size:.75rem}
+
+/* Leaflet Dark */
+.leaflet-popup-content-wrapper{background:#1a1a1a!important;color:#eee!important;border-radius:6px!important;box-shadow:0 2px 12px rgba(0,0,0,.6)!important}
+.leaflet-popup-tip{background:#1a1a1a!important}
+.leaflet-popup-content{font-size:.85rem;line-height:1.5}
+.popup-id{color:#666;font-size:.7rem;font-family:monospace;margin-bottom:2px}
+.popup-title{font-weight:600;font-size:.95rem;margin-bottom:4px}
+.popup-desc{color:#bbb;font-size:.82rem;margin-bottom:4px;font-style:italic}
+.popup-coords{color:#999;font-size:.78rem;font-family:monospace}
+.popup-time{color:#777;font-size:.75rem;margin-top:4px}
+.custom-marker{width:16px;height:16px;background:#fff;border:2px solid #000;border-radius:50%;box-shadow:0 0 6px rgba(255,255,255,.4)}
+.leaflet-control-zoom a{background:#222!important;color:#eee!important;border-color:#444!important}
+.leaflet-control-zoom a:hover{background:#333!important}
+.leaflet-control-attribution{background:rgba(0,0,0,.7)!important;color:#666!important}
+.leaflet-control-attribution a{color:#888!important}
+.nr-label{background:none!important;border:none!important;box-shadow:none!important;color:#fff;font-weight:700;font-size:11px;text-shadow:0 0 4px #000,0 0 2px #000}
+
+/* Print / Responsive */
+@media(max-width:900px){.container{flex-direction:column}#panel{width:100%;max-width:100%;max-height:50vh}#map-col{height:50vh}}
+@media print{header{position:static}body{background:#fff;color:#000}.container{flex-direction:column;height:auto}#map-col{height:500px}#panel{width:100%;max-width:100%;border:none;overflow:visible}
+  .stat{background:#f5f5f5;border-color:#ccc}.stat-val{color:#000}th{background:#eee;color:#333}td{color:#333}tr:hover td{background:#f9f9f9}h3{color:#333;border-color:#ccc}.infra-tag{background:#eee;border-color:#ccc;color:#333}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📍 Auswertung – Festplatz Messpunkte</h1>
+  <span class="header-info">Erstellt: 20.03.2026</span>
+</header>
+
+<div class="container">
+  <div id="map-col"><div id="map"></div></div>
+  <div id="panel"><div id="content"></div></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// ========== EINGEBETTETE DATEN ==========
+const DATA = [
+  {"id":1,"name":"Test1","description":"1234","lat":49.104934,"lon":11.686437,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T15:29:58.900690+00:00","user":"Sebastian"},
+  {"id":2,"name":"Ende Bar Abwasser+Wasser","description":"Ende Bar Abwasser+Wasser","lat":49.110061,"lon":11.68439,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T15:50:18.661158+00:00","user":"Sebastian"},
+  {"id":3,"name":"Messpunkt 2","description":"Ende Strom, Revision Wasser","lat":49.110174,"lon":11.684276,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T15:51:21.652930+00:00","user":"Sebastian"},
+  {"id":4,"name":"Messpunkt 3","description":"Revision Strom, Revision Wasser, Schmutzwasser","lat":49.110236,"lon":11.684183,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T17:40:21.144522+00:00","user":"Sebastian"},
+  {"id":5,"name":"Messpunkt 4","description":"Revision Wasser, Revision Strom, Abwasser","lat":49.110297,"lon":11.68409,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T17:40:32.517296+00:00","user":"Sebastian"},
+  {"id":6,"name":"Messpunkt 5","description":"Messpunkt 5","lat":49.110651,"lon":11.683828,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T17:40:39.195308+00:00","user":"Sebastian"},
+  {"id":7,"name":"Messpunkt 6","description":"Strom, Abwasser Anschluss, Revision Wasser, Revision Strom","lat":49.110387,"lon":11.683969,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T17:40:45.233529+00:00","user":"Sebastian"},
+  {"id":8,"name":"Messpunkt 7","description":"Anschluss Abwasser","lat":49.110415,"lon":11.68394,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T17:40:50.849852+00:00","user":"Sebastian"},
+  {"id":9,"name":"Messpunkt 8","description":"Anschluss Abwasser, Revision Strom, Revision Wasser","lat":49.110444,"lon":11.683912,"altitude":null,"accuracy":null,"timestamp":"2026-03-20T17:40:57.130930+00:00","user":"Sebastian"}
+];
+
+// ========== KARTE ==========
+const map = L.map("map",{center:[49.11016968965268,11.684055672272553],zoom:18,maxZoom:21});
+
+L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{
+  attribution:"&copy; Esri, Maxar, Earthstar Geographics",maxZoom:21,maxNativeZoom:19
+}).addTo(map);
+
+const markerIcon = L.divIcon({className:"custom-marker",iconSize:[16,16],iconAnchor:[8,8],popupAnchor:[0,-12]});
+const bounds = [];
+
+DATA.forEach(function(p,idx){
+  const ll = [p.lat,p.lon];
+  bounds.push(ll);
+
+  let t = "";
+  if(p.timestamp){const d=new Date(p.timestamp);t=d.toLocaleDateString("de-DE")+" "+d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}
+
+  const popup = '<div class="popup-id">#'+p.id+'</div>'
+    +'<div class="popup-title">'+esc(p.name)+'</div>'
+    +(p.description?'<div class="popup-desc">'+esc(p.description)+'</div>':'')
+    +'<div class="popup-coords">'+p.lat.toFixed(8)+', '+p.lon.toFixed(8)+'</div>'
+    +(t?'<div class="popup-time">'+t+'</div>':'');
+
+  L.marker(ll,{icon:markerIcon}).addTo(map).bindPopup(popup);
+
+  // Nummer-Label
+  L.marker(ll,{icon:L.divIcon({className:"nr-label",html:'<b>'+p.id+'</b>',iconSize:[20,14],iconAnchor:[-6,7]})}).addTo(map);
+
+  // Verbindungslinie
+  if(idx>0){
+    const prev=DATA[idx-1];
+    if(hav(prev.lat,prev.lon,p.lat,p.lon)<500){
+      L.polyline([[prev.lat,prev.lon],ll],{color:"#fff",weight:1.5,opacity:.4,dashArray:"6,4"}).addTo(map);
+    }
+  }
+});
+
+if(bounds.length===1)map.setView(bounds[0],19);
+else map.fitBounds(bounds,{padding:[50,50],maxZoom:19});
+
+// ========== AUSWERTUNG ==========
+const el = document.getElementById("content");
+const latMin=Math.min(...DATA.map(p=>p.lat)),latMax=Math.max(...DATA.map(p=>p.lat));
+const lonMin=Math.min(...DATA.map(p=>p.lon)),lonMax=Math.max(...DATA.map(p=>p.lon));
+
+let totalDist=0; const dists=[];
+for(let i=1;i<DATA.length;i++){const d=hav(DATA[i-1].lat,DATA[i-1].lon,DATA[i].lat,DATA[i].lon);dists.push(d);totalDist+=d}
+
+const spanNS=hav(latMin,lonMin,latMax,lonMin),spanEW=hav(latMin,lonMin,latMin,lonMax);
+
+const ts=DATA.filter(p=>p.timestamp).map(p=>new Date(p.timestamp));
+let zeitraum="-";
+if(ts.length>1){zeitraum=new Date(Math.min(...ts)).toLocaleDateString("de-DE")+" – "+new Date(Math.max(...ts)).toLocaleDateString("de-DE")}
+else if(ts.length===1){zeitraum=ts[0].toLocaleDateString("de-DE")}
+
+const infra={};
+DATA.forEach(p=>{const d=(p.description||"").toLowerCase();["strom","wasser","abwasser","schmutzwasser","revision"].forEach(t=>{if(d.includes(t))infra[t]=(infra[t]||0)+1})});
+
+let h = '<div class="stats-grid">'
+  +'<div class="stat"><span class="stat-val">'+DATA.length+'</span><span class="stat-label">Messpunkte</span></div>'
+  +'<div class="stat"><span class="stat-val">'+totalDist.toFixed(1)+' m</span><span class="stat-label">Gesamtstrecke</span></div>'
+  +'<div class="stat"><span class="stat-val">'+spanNS.toFixed(1)+' m</span><span class="stat-label">Ausdehnung N–S</span></div>'
+  +'<div class="stat"><span class="stat-val">'+spanEW.toFixed(1)+' m</span><span class="stat-label">Ausdehnung O–W</span></div>'
+  +'<div class="stat"><span class="stat-val">'+zeitraum+'</span><span class="stat-label">Zeitraum</span></div>'
+  +'</div>';
+
+if(Object.keys(infra).length){
+  h+='<h3>Infrastruktur</h3><div class="infra-tags">';
+  Object.entries(infra).sort((a,b)=>b[1]-a[1]).forEach(([t,c])=>{h+='<span class="infra-tag">'+esc(t.charAt(0).toUpperCase()+t.slice(1))+' ('+c+')</span>'});
+  h+='</div>';
+}
+
+h+='<h3>Alle Messpunkte</h3><div class="table-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Beschreibung</th><th>Lat</th><th>Lon</th><th>Datum</th></tr></thead><tbody>';
+DATA.forEach(p=>{
+  const d=p.timestamp?new Date(p.timestamp):null;
+  const ds=d?d.toLocaleDateString("de-DE")+" "+d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}):"-";
+  h+='<tr><td>'+p.id+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.description||"-")+'</td><td class="mono">'+p.lat.toFixed(8)+'</td><td class="mono">'+p.lon.toFixed(8)+'</td><td>'+ds+'</td></tr>';
+});
+h+='</tbody></table></div>';
+
+if(dists.length){
+  h+='<h3>Abstände (aufeinanderfolgend)</h3><div class="table-wrap"><table><thead><tr><th>Von</th><th>Nach</th><th>Distanz</th></tr></thead><tbody>';
+  for(let i=0;i<dists.length;i++){
+    h+='<tr><td>#'+DATA[i].id+' '+esc(DATA[i].name)+'</td><td>#'+DATA[i+1].id+' '+esc(DATA[i+1].name)+'</td><td class="mono">'+dists[i].toFixed(2)+' m</td></tr>';
+  }
+  h+='</tbody></table></div>';
+}
+
+el.innerHTML = h;
+
+// ========== HELPERS ==========
+function hav(lat1,lon1,lat2,lon2){const R=6371000,r=d=>d*Math.PI/180,dL=r(lat2-lat1),dN=r(lon2-lon1),a=Math.sin(dL/2)**2+Math.cos(r(lat1))*Math.cos(r(lat2))*Math.sin(dN/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function esc(t){const d=document.createElement("div");d.appendChild(document.createTextNode(t));return d.innerHTML}
+})();
+</script>
+</body>
+</html>

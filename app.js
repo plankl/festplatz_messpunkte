@@ -290,6 +290,98 @@
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
+  // --- Drohnenfotos ---
+  const FOTOS = [
+    { file: "dji_fly_20260321_181834_189_1774021582162_photo.jpg", lat: 49.11022356, lon: 11.68386842, alt: 571, label: "Foto 1 – Übersicht Ost-West" },
+    { file: "dji_fly_20260321_181842_190_1774021581874_photo.jpg", lat: 49.11034611, lon: 11.68405944, alt: 566, label: "Foto 2 – Nord-Süd Trasse" },
+    { file: "dji_fly_20260321_181928_191_1774021581565_photo.jpg", lat: 49.11010933, lon: 11.68432358, alt: 616, label: "Foto 3 – Gesamtübersicht" },
+    { file: "dji_fly_20260321_182012_192_1774021581281_photo.jpg", lat: 49.11006797, lon: 11.68415356, alt: 596, label: "Foto 4 – Trasse Süd" },
+    { file: "dji_fly_20260321_182020_193_1774021581034_photo.jpg", lat: 49.11029042, lon: 11.68383275, alt: 596, label: "Foto 5 – Baufeld West" },
+    { file: "dji_fly_20260321_182032_194_1774021580783_photo.jpg", lat: 49.11029044, lon: 11.68383275, alt: 596, label: "Foto 6 – Baufeld Detail" },
+    { file: "dji_fly_20260321_182038_195_1774021580540_photo.jpg", lat: 49.11029039, lon: 11.68383442, alt: 584, label: "Foto 7 – Graben komplett" },
+    { file: "dji_fly_20260321_182042_196_1774021580281_photo.jpg", lat: 49.11029033, lon: 11.68383392, alt: 584, label: "Foto 8 – Anschlussbereich" },
+  ];
+
+  const fotoLayerGroup = L.layerGroup();
+  let fotosVisible = false;
+
+  const camIcon = L.divIcon({
+    className: "cam-marker",
+    html: "📷",
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -14],
+  });
+
+  FOTOS.forEach((f, idx) => {
+    const m = L.marker([f.lat, f.lon], { icon: camIcon });
+    m.bindPopup(
+      '<div class="foto-popup">' +
+        '<div class="popup-title">' + escapeHtml(f.label) + '</div>' +
+        '<img src="Fotos/thumb/' + f.file + '" class="popup-thumb" data-idx="' + idx + '" />' +
+        '<div class="popup-coords">' + f.lat.toFixed(8) + ", " + f.lon.toFixed(8) + '</div>' +
+        '<div class="popup-alt">Flughöhe: ' + f.alt + ' m ü. NN</div>' +
+      '</div>',
+      { maxWidth: 300 }
+    );
+    fotoLayerGroup.addLayer(m);
+  });
+
+  document.getElementById("btn-fotos").addEventListener("click", function () {
+    fotosVisible = !fotosVisible;
+    if (fotosVisible) {
+      fotoLayerGroup.addTo(map);
+      this.classList.add("active");
+    } else {
+      fotoLayerGroup.removeFrom(map);
+      this.classList.remove("active");
+    }
+  });
+
+  // --- Lightbox ---
+  const lbEl = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lb-img");
+  const lbCaption = document.getElementById("lb-caption");
+  let lbIdx = 0;
+
+  function openLightbox(idx) {
+    lbIdx = idx;
+    lbImg.src = "Fotos/web/" + FOTOS[idx].file;
+    lbCaption.textContent = FOTOS[idx].label;
+    lbEl.classList.remove("hidden");
+  }
+
+  function closeLightbox() {
+    lbEl.classList.add("hidden");
+    lbImg.src = "";
+  }
+
+  document.getElementById("lb-close").addEventListener("click", closeLightbox);
+  lbEl.addEventListener("click", function (e) {
+    if (e.target === lbEl) closeLightbox();
+  });
+  document.getElementById("lb-prev").addEventListener("click", function () {
+    openLightbox((lbIdx - 1 + FOTOS.length) % FOTOS.length);
+  });
+  document.getElementById("lb-next").addEventListener("click", function () {
+    openLightbox((lbIdx + 1) % FOTOS.length);
+  });
+
+  // Klick auf Thumbnail in Popup oeffnet Lightbox
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("popup-thumb")) {
+      openLightbox(parseInt(e.target.dataset.idx, 10));
+    }
+  });
+
+  // Tastatur-Navigation
+  document.addEventListener("keydown", function (e) {
+    if (lbEl.classList.contains("hidden")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") openLightbox((lbIdx - 1 + FOTOS.length) % FOTOS.length);
+    if (e.key === "ArrowRight") openLightbox((lbIdx + 1) % FOTOS.length);
+  });
+
   // --- HTML escapen ---
   function escapeHtml(text) {
     const div = document.createElement("div");
