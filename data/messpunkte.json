@@ -64,6 +64,19 @@
       "speed": null,
       "timestamp": "2026-03-20T17:40:32.517296+00:00",
       "user": "Sebastian"
+    },
+    {
+      "id": 6,
+      "name": "Messpunkt 5",
+      "description": "Messpunkt 5",
+      "lat": 49.110651,
+      "lon": 11.683828,
+      "altitude": null,
+      "accuracy": null,
+      "heading": null,
+      "speed": null,
+      "timestamp": "2026-03-20T17:40:39.195308+00:00",
+      "user": "Sebastian"
     }
   ]
 }
