@@ -4,11 +4,11 @@ Messpunkte per Telegram-Bot erfassen und auf einer interaktiven Satellitenkarte 
 
 ## Übersicht
 
-| Komponente | Beschreibung |
-|---|---|
-| **Telegram Bot** (`bot/`) | Python-Bot — Standort senden → Bezeichnung eingeben → wird in JSON gespeichert |
-| **Karte** (`index.html`) | Leaflet-Karte mit Satellit/Straße/Topo-Ansicht, gehostet via GitHub Pages |
-| **Daten** (`data/messpunkte.json`) | Alle Messpunkte als JSON |
+| Komponente                         | Beschreibung                                                                   |
+| ---------------------------------- | ------------------------------------------------------------------------------ |
+| **Telegram Bot** (`bot/`)          | Python-Bot — Standort senden → Bezeichnung eingeben → wird in JSON gespeichert |
+| **Karte** (`index.html`)           | Leaflet-Karte mit Satellit/Straße/Topo-Ansicht, gehostet via GitHub Pages      |
+| **Daten** (`data/messpunkte.json`) | Alle Messpunkte als JSON                                                       |
 
 ## Telegram Bot einrichten
 
@@ -29,12 +29,12 @@ Messpunkte per Telegram-Bot erfassen und auf einer interaktiven Satellitenkarte 
 
 ### Bot-Befehle
 
-| Befehl | Funktion |
-|---|---|
-| `/start` | Hilfe anzeigen |
-| `/liste` | Alle Messpunkte auflisten |
-| `/loesche <id>` | Messpunkt löschen |
-| *Standort senden* | Neuen Messpunkt erfassen |
+| Befehl            | Funktion                  |
+| ----------------- | ------------------------- |
+| `/start`          | Hilfe anzeigen            |
+| `/liste`          | Alle Messpunkte auflisten |
+| `/loesche <id>`   | Messpunkt löschen         |
+| _Standort senden_ | Neuen Messpunkt erfassen  |
 
 ## Karte (GitHub Pages)
 
@@ -42,6 +42,7 @@ Die Datei `index.html` im Root wird direkt von GitHub Pages ausgeliefert.
 Messpunkte werden aus `data/messpunkte.json` geladen.
 
 ### Kartenmodi
+
 - **Satellit** — Esri World Imagery
 - **Straße** — CARTO Dark
 - **Topografisch** — CARTO Light
